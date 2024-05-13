@@ -45,6 +45,10 @@ async function run() {
         await client.connect();
 
         const roomsCollection = client.db("roomsDB").collection("rooms");
+        const bookingsCollection = client.db("roomsDB").collection("bookings");
+
+
+
         //get all rooms from db
         app.get('/rooms', async (req, res) => {
             const cursor = roomsCollection.find();
@@ -62,6 +66,18 @@ async function run() {
             res.json(result);
 
         })
+
+
+        //post booking information to mongodb
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body;
+
+            const result = await bookingsCollection.insertOne(booking);
+            res.send(result)
+
+
+        })
+
 
 
 
