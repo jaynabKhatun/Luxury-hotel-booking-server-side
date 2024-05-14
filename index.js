@@ -99,6 +99,39 @@ async function run() {
         })
 
 
+        //update Booking iformation
+        app.get('/bookings/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await bookingsCollection.findOne(query);
+            res.send(result);
+        })
+
+        app.put('/bookings/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const options = { upsert: true }
+            const updatedBooking = req.body;
+            const booking = {
+                $set: {
+                    email: updatedBooking.email,
+                    date: updatedBooking.date,
+                    name: updatedBooking.name,
+                    room_size: updatedBooking.room_size,
+                    price: updatedBooking.price,
+                    availability: updatedBooking.availability
+                }
+            }
+            const result = await bookingsCollection.updateOne(query, booking, options);
+            res.send(result);
+
+
+
+
+        })
+
+
+
 
 
 
