@@ -46,6 +46,7 @@ async function run() {
 
         const roomsCollection = client.db("roomsDB").collection("rooms");
         const bookingsCollection = client.db("roomsDB").collection("bookings");
+        const allRoomsCollection = client.db("roomsDB").collection("allRooms");
 
 
 
@@ -99,7 +100,7 @@ async function run() {
         })
 
 
-        //update Booking iformation
+        //update Booking information
         app.get('/bookings/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) }
@@ -129,6 +130,9 @@ async function run() {
 
 
         })
+
+
+
 
 
 
