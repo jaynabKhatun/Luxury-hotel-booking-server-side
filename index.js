@@ -46,7 +46,7 @@ async function run() {
 
         const roomsCollection = client.db("roomsDB").collection("rooms");
         const bookingsCollection = client.db("roomsDB").collection("bookings");
-        const allRoomsCollection = client.db("roomsDB").collection("allRooms");
+        const reviewsCollection = client.db("roomsDB").collection("reviews");
 
 
 
@@ -128,6 +128,24 @@ async function run() {
 
 
 
+
+        })
+
+        //insert a review to db
+        app.post('/review', async (req, res) => {
+            const review = req.body;
+
+            const result = await reviewsCollection.insertOne(review);
+            res.send(result)
+
+
+        })
+
+        //get reviews from db
+        app.get('/review', async (req, res) => {
+            const cursor = reviewsCollection.find();
+            const result = await cursor.toArray();
+            res.json(result);
 
         })
 
