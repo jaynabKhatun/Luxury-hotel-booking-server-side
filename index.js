@@ -1,11 +1,11 @@
-const express = require('express')
-const cors = require('cors')
-const jwt = require('jsonwebtoken')
-const cookieParser = require('cookie-parser')
+const express = require('express');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-require('dotenv').config()
-const port = process.env.PORT || 5000
-const app = express()
+require('dotenv').config();
+const port = process.env.PORT || 5000;
+const app = express();
 
 
 const corsOptions = {
@@ -18,9 +18,13 @@ const corsOptions = {
     optionSuccessStatus: 200,
 }
 
+
+
+//midleware
+
 app.use(cors(corsOptions))
 app.use(express.json())
-// app.use(cookieParser())
+app.use(cookieParser())
 
 
 
@@ -55,14 +59,14 @@ async function run() {
             console.log(user)
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
             res
-                .cookie('cookie', token, {
+                .cookie('token', token, {
                     httpOnly: true,
                     secure: true,
                     sameSite: 'none',
 
                 })
 
-                .send({success: true});
+                .send({ success: true });
         })
 
 
@@ -103,6 +107,7 @@ async function run() {
 
         //get some bookings data from db
         app.get('/bookings', async (req, res) => {
+            console.log('token here', req.cookies.token)
             let query = {};
             if (req.query?.email) {
                 query = { email: req.query.email }
